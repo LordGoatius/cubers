@@ -1,0 +1,8 @@
+[package]
+name = "cubers"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ndarray = { version = "0.16.1", features = ["matrixmultiply-threading", "rayon"] }
+rayon = "1.10.0"
