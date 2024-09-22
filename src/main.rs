@@ -1,6 +1,9 @@
 #![feature(f128)]
 pub mod matrix;
 pub mod point;
+pub mod line;
+pub mod screen;
+pub mod shape;
 
 fn main() {
     println!("Hello, world!");
