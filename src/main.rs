@@ -1,12 +1,15 @@
 #![feature(f128)]
+
+use screen::Screen;
 pub mod matrix;
 pub mod point;
 pub mod line;
 pub mod screen;
 pub mod shape;
 
-fn main() {
-    println!("Hello, world!");
+fn main() -> ! {
+    let screen = Screen::default();
+    screen.init_render_cube();
 }
 
 #[cfg(test)]

@@ -1,9 +1,9 @@
 use std::ops::{Deref, DerefMut};
 
-use crate::line::Line;
+use crate::{line::Line, point::Point};
 
 #[derive(Debug, Default, Clone)]
-pub struct Shape(Vec<Line>);
+pub struct Shape(pub Vec<Line>);
 
 impl Deref for Shape {
     type Target = Vec<Line>;
@@ -21,19 +21,39 @@ impl DerefMut for Shape {
 
 impl Shape {
     /// Rotate shape around the x axis theta radians
-    pub fn rotate_x_theta(&mut self, theta: f128) {
-        let _ = self.0.iter_mut().map(|x| x.rotate_x_theta(theta)).collect::<Vec<_>>();
+    pub fn rotate_x_theta(self, theta: f128) -> Shape {
+        Shape(self.0.iter().map(|x| x.rotate_x_theta(theta)).collect::<Vec<_>>())
     }
 
     /// Rotate shape around the y axis theta radians
-    pub fn rotate_y_theta(&mut self, theta: f128) {
-        let _ = self.0.iter_mut().map(|x| x.rotate_y_theta(theta)).collect::<Vec<_>>();
+    pub fn rotate_y_theta(&mut self, theta: f128) -> Shape {
+        Shape(self.0.iter().map(|x| x.rotate_y_theta(theta)).collect::<Vec<_>>())
     }
     
     /// Rotate shape around the z axis theta radians
-    pub fn rotate_z_theta(&mut self, theta: f128) {
-        let _ = self.0.iter_mut().map(|x| x.rotate_z_theta(theta)).collect::<Vec<_>>();
+    pub fn rotate_z_theta(&mut self, theta: f128) -> Shape {
+        Shape(self.0.iter().map(|x| x.rotate_z_theta(theta)).collect::<Vec<_>>())
+    }
+
+    pub fn cube() -> Shape {
+        Shape(vec![
+            // Pos to self
+            Line([Point([ 1.,  1., 1.]), Point([-1.,  1., 1.])]),
+            Line([Point([-1.,  1., 1.]), Point([-1., -1., 1.])]),
+            Line([Point([-1., -1., 1.]), Point([ 1., -1., 1.])]),
+            Line([Point([ 1., -1., 1.]), Point([ 1.,  1., 1.])]),
+
+            // Pos to neg
+            Line([Point([ 1.,  1., 1.]), Point([ 1.,  1., -1.])]),
+            Line([Point([-1.,  1., 1.]), Point([-1.,  1., -1.])]),
+            Line([Point([-1., -1., 1.]), Point([-1., -1., -1.])]),
+            Line([Point([ 1., -1., 1.]), Point([ 1., -1., -1.])]),
+
+            // Neg to self
+            Line([Point([ 1.,  1., -1.]), Point([-1.,  1., -1.])]),
+            Line([Point([-1.,  1., -1.]), Point([-1., -1., -1.])]),
+            Line([Point([-1., -1., -1.]), Point([ 1., -1., -1.])]),
+            Line([Point([ 1., -1., -1.]), Point([ 1.,  1., -1.])]),
+        ])
     }
 }
-
-
