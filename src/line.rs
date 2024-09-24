@@ -1,4 +1,4 @@
-use std::ops::{Deref, DerefMut};
+use std::ops::{Deref, DerefMut, Mul};
 
 use crate::point::Point;
 
@@ -16,6 +16,14 @@ impl Deref for Line {
 impl DerefMut for Line {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
+    }
+}
+
+impl Mul<f128> for Line {
+    type Output = Line;
+
+    fn mul(self, rhs: f128) -> Self::Output {
+        Line(self.map(|pt| pt * rhs))
     }
 }
 

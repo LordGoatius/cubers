@@ -12,22 +12,38 @@ pub struct Screen {
 
 impl Screen {
     pub fn init_render_cube(mut self) -> ! {
-        let mut cube = Shape::cube();
+        let mut cube = Shape::cube() * 1.1;
+        let mut small_cube = cube.clone() * 0.6;
+        cube.1 = '.';
+        small_cube.1 = '*';
         loop {
+            self.render_shape(small_cube.clone());
             self.render_shape(cube.clone());
+            self.print_screen();
             self.clear_screen();
+            // small_cube = small_cube.clone().rotate_y_theta(std::f128::consts::PI / 90.);
+            // small_cube = small_cube.clone().rotate_x_theta(std::f128::consts::PI / 70.);
+            // small_cube = small_cube.clone().rotate_z_theta(std::f128::consts::PI / 180.);
+
+            // cube = cube.clone().rotate_y_theta(std::f128::consts::PI / (2. * -90.));
+            // cube = cube.clone().rotate_x_theta(std::f128::consts::PI / (2. * -70.));
+            // cube = cube.clone().rotate_z_theta(std::f128::consts::PI / (2. * -180.));
+
             cube = cube.clone().rotate_y_theta(std::f128::consts::PI / 90.);
             cube = cube.clone().rotate_x_theta(std::f128::consts::PI / 70.);
             cube = cube.clone().rotate_z_theta(std::f128::consts::PI / 180.);
-            sleep(Duration::new(0, 9000000));
+
+            small_cube = small_cube.clone().rotate_y_theta(std::f128::consts::PI / (2. * -90.));
+            small_cube = small_cube.clone().rotate_x_theta(std::f128::consts::PI / (2. * -70.));
+            small_cube = small_cube.clone().rotate_z_theta(std::f128::consts::PI / (2. * -180.));
+            sleep(Duration::from_millis(50));
         }
     }
 
     fn render_shape(&mut self, shape: Shape) {
         shape.0.iter().for_each(|line| {
-            self.render_line(*line, '*');
+            self.render_line(*line, shape.1);
         });
-        self.print_screen();
     }
 
     fn render_line(&mut self, line: Line, char: char) {
@@ -39,8 +55,10 @@ impl Screen {
     fn set_point(&mut self, coords: Point, char: char) {
         let (screen_x, screen_y) = coords.to_screen_xy();
         let (buff_coord_x, buff_coord_y) = (
-            ((screen_x * 39. / 3.25 * (5. / 3.)) + 39.).round() as usize,
-            ((screen_y * 21. / 1.75) + 21.).round() as usize,
+            ((screen_x * 39. / 2.16666666666666 * (5. / 3.)) + 39.).round() as usize,
+            ((screen_y * 21. / 1.16666666666666) + 21.).round() as usize,
+            //((screen_x * 39. / 3.25 * (5. / 3.)) + 39.).round() as usize,
+            //((screen_y * 21. / 1.75) + 21.).round() as usize,
         );
         self.screen[buff_coord_y][buff_coord_x] = char;
     }

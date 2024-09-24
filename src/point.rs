@@ -38,6 +38,14 @@ impl Mul for Point {
     }
 }
 
+impl Mul<f128> for Point {
+    type Output = Point;
+
+    fn mul(self, rhs: f128) -> Self::Output {
+        Point(self.map(|x| x * rhs))
+    }
+}
+
 impl Point {
     pub fn l1_norm(&self) -> f128 {
         self[0].abs() + self[1].abs() + self[2].abs()
