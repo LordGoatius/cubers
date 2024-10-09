@@ -2,6 +2,8 @@ use std::ops::{Deref, DerefMut, Mul};
 
 use crate::point::Point;
 
+pub mod fourd;
+
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Line(pub [Point; 2]);
 

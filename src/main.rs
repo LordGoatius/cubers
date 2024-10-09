@@ -9,14 +9,15 @@ pub mod shape;
 
 fn main() -> ! {
     let screen = Screen::default();
-    screen.init_render_cube();
+    //screen.init_render_cube();
+    screen.init_render_hypercube();
 }
 
 #[cfg(test)]
 pub mod test {
     use std::f128;
     use crate::{
-        matrix::{Matrix, Matrix3x3},
+        matrix::Matrix3x3,
         point::Point,
     };
 
@@ -30,14 +31,14 @@ pub mod test {
 
     #[test]
     fn matmul() {
-        let matrix0: Matrix = Matrix3x3([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
-        let matrix1: Matrix = Matrix3x3([[1., 2., 3.], [3., 1., 2.], [2., 3., 1.]]);
+        let matrix0: Matrix3x3 = Matrix3x3([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
+        let matrix1: Matrix3x3 = Matrix3x3([[1., 2., 3.], [3., 1., 2.], [2., 3., 1.]]);
 
-        let swap23:  Matrix = Matrix3x3([[1., 0., 0.], [0., 0., 1.], [0., 1., 0.]]);
+        let swap23:  Matrix3x3 = Matrix3x3([[1., 0., 0.], [0., 0., 1.], [0., 1., 0.]]);
 
-        let matrix2: Matrix = Matrix3x3([[1., 2., 3.], [2., 3., 1.], [3., 1., 2.]]);
-        let matrix3: Matrix = Matrix3x3([[1., 3., 2.], [2., 1., 3.], [3., 2., 1.]]);
-        let matrix4: Matrix = Matrix3x3([[1., 3., 2.], [3., 2., 1.], [2., 1., 3.]]);
+        let matrix2: Matrix3x3 = Matrix3x3([[1., 2., 3.], [2., 3., 1.], [3., 1., 2.]]);
+        let matrix3: Matrix3x3 = Matrix3x3([[1., 3., 2.], [2., 1., 3.], [3., 2., 1.]]);
+        let matrix4: Matrix3x3 = Matrix3x3([[1., 3., 2.], [3., 2., 1.], [2., 1., 3.]]);
 
         assert_eq!(matrix1 * matrix0, matrix1);
         assert_eq!(matrix0 * matrix1, matrix1);

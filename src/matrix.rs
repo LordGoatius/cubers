@@ -1,11 +1,10 @@
 use std::ops::{Add, Deref, DerefMut, Mul};
 
 use crate::point::Point;
+pub mod fourd;
 
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
 pub struct Matrix3x3(pub [[f128; 3]; 3]);
-
-pub type Matrix = Matrix3x3;
 
 impl Matrix3x3 {
     /// Rotation matrix for rotation across the x axis. Theta is in radians

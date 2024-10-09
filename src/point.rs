@@ -2,6 +2,8 @@ use std::{f128, fmt::Display, ops::{Add, Deref, DerefMut, Mul}};
 
 use crate::matrix::Matrix3x3;
 
+pub mod fourd;
+
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Point(pub [f128; 3]);
 

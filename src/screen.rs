@@ -1,6 +1,7 @@
 use std::{char, fmt::Display, thread::sleep, time::Duration};
 
 use crate::{line::Line, point::Point, shape::Shape};
+use crate::shape::fourd::Shape as Shape4d;
 
 pub type ScreenBuffer = [[char; 78]; 42];
 pub struct MyScreenBuffer(ScreenBuffer);
@@ -11,6 +12,29 @@ pub struct Screen {
 }
 
 impl Screen {
+    pub fn init_render_hypercube(mut self) -> ! {
+        let mut hypercube = Shape4d::hypercube() * 1.5;
+        hypercube.1 = '.';
+        loop {
+            let cube = hypercube.to_shape_3d();
+            self.render_shape(cube.clone());
+            self.print_screen();
+            self.clear_screen();
+
+            //hypercube = hypercube.clone().rotate_xw_theta(std::f128::consts::PI / 70.);
+            //hypercube = hypercube.clone().rotate_yz_theta(std::f128::consts::PI / 90.);
+
+            //hypercube = hypercube.clone().rotate_yw_theta(std::f128::consts::PI / 70.);
+            //hypercube = hypercube.clone().rotate_xz_theta(std::f128::consts::PI / 90.);
+
+            hypercube = hypercube.clone().rotate_zw_theta(std::f128::consts::PI / 90.);
+            hypercube = hypercube.clone().rotate_xy_theta(std::f128::consts::PI / 90.);
+            //hypercube = hypercube.clone().rotate_xy_theta(std::f128::consts::PI / 270.);
+
+            sleep(Duration::from_millis(50));
+        }
+    }
+
     pub fn init_render_cube(mut self) -> ! {
         let mut cube = Shape::cube() * 1.1;
         let mut small_cube = cube.clone() * 0.6;
@@ -60,7 +84,12 @@ impl Screen {
             //((screen_x * 39. / 3.25 * (5. / 3.)) + 39.).round() as usize,
             //((screen_y * 21. / 1.75) + 21.).round() as usize,
         );
-        self.screen[buff_coord_y][buff_coord_x] = char;
+        if let Some(x) = self.screen.get_mut(buff_coord_y) {
+            if let Some(coord) = x.get_mut(buff_coord_x) {
+                *coord = char;
+            }
+        }
+        //self.screen[buff_coord_y][buff_coord_x] = char;
     }
 
     fn print_screen(&self) {

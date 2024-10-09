@@ -2,6 +2,8 @@ use std::ops::{Deref, DerefMut, Mul};
 
 use crate::{line::Line, point::Point};
 
+pub mod fourd;
+
 #[derive(Debug, Default, Clone)]
 pub struct Shape(pub Vec<Line>, pub char);
 
