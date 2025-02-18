@@ -6,7 +6,7 @@ use crate::point::fourd::Point;
 pub struct Matrix4x4(pub [[f128; 4]; 4]);
 
 impl Matrix4x4 {
-    /// Rotation matrix for rotation across the x axis. Theta is in radians
+    /// Rotation matrix for rotation across the zw plane. Theta is in radians
     pub fn rotate_zw_theta(theta: f128) -> Matrix4x4 {
         let cos = theta.cos();
         let sin = theta.sin();
@@ -18,7 +18,7 @@ impl Matrix4x4 {
         ])
     }
 
-    /// Rotation matrix for rotation across the y axis. Theta is in radians
+    /// Rotation matrix for rotation across the yw plane. Theta is in radians
     pub fn rotate_yw_theta(theta: f128) -> Matrix4x4 {
         let cos = theta.cos();
         let sin = theta.sin();
@@ -30,7 +30,7 @@ impl Matrix4x4 {
         ])
     }
 
-    /// Rotation matrix for rotation across the z axis. Theta is in radians
+    /// Rotation matrix for rotation across the yz plane. Theta is in radians
     pub fn rotate_yz_theta(theta: f128) -> Matrix4x4 {
         let cos = theta.cos();
         let sin = theta.sin();
@@ -42,6 +42,7 @@ impl Matrix4x4 {
         ])
     }
 
+    /// Rotation matrix for rotation across the xw plane. Theta is in radians
     pub fn rotate_xw_theta(theta: f128) -> Matrix4x4 {
         let cos = theta.cos();
         let sin = theta.sin();
@@ -52,6 +53,8 @@ impl Matrix4x4 {
             [0., 0.,    0., 1.],
         ])
     }
+
+    /// Rotation matrix for rotation across the xz plane. Theta is in radians
     pub fn rotate_xz_theta(theta: f128) -> Matrix4x4 {
         let cos = theta.cos();
         let sin = theta.sin();
@@ -63,6 +66,7 @@ impl Matrix4x4 {
         ])
     }
 
+    /// Rotation matrix for rotation across the xy plane. Theta is in radians
     pub fn rotate_xy_theta(theta: f128) -> Matrix4x4 {
         let cos = theta.cos();
         let sin = theta.sin();

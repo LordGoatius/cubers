@@ -12,24 +12,61 @@ pub struct Screen {
 }
 
 impl Screen {
-    pub fn init_render_hypercube(mut self) -> ! {
-        let mut hypercube = Shape4d::hypercube() * 1.5;
-        hypercube.1 = '.';
+    pub fn init_render_fivecell(mut self) -> ! {
+        let mut fivecell = Shape4d::fivecell() * 3.5;
+        fivecell.1 = '.';
+        //let mut fivecell2 = Shape4d::fivecell();
+        //fivecell = fivecell.clone().rotate_xy_theta(std::f128::consts::PI / 6.);
         loop {
-            let cube = hypercube.to_shape_3d();
-            self.render_shape(cube.clone());
+            let cube = fivecell.to_shape_3d();
+            self.render_shape(cube);
+            //let cube2 = fivecell2.to_shape_3d();
+            //self.render_shape(cube2);
             self.print_screen();
             self.clear_screen();
 
-            //hypercube = hypercube.clone().rotate_xw_theta(std::f128::consts::PI / 70.);
-            //hypercube = hypercube.clone().rotate_yz_theta(std::f128::consts::PI / 90.);
+            //fivecell = fivecell.rotate_xw_theta(std::f128::consts::PI / 70.);
+            //fivecell = fivecell.rotate_yz_theta(std::f128::consts::PI / 90.);
 
-            //hypercube = hypercube.clone().rotate_yw_theta(std::f128::consts::PI / 70.);
+            //fivecell = fivecell.rotate_yw_theta(std::f128::consts::PI / 70.);
+            //fivecell = fivecell.rotate_xz_theta(std::f128::consts::PI / 90.);
+
+            fivecell = fivecell.rotate_zw_theta(std::f128::consts::PI / 90.);
+            //fivecell = fivecell.clone().rotate_xz_theta(std::f128::consts::PI / 90.);
+            fivecell = fivecell.rotate_xy_theta(std::f128::consts::PI / 90.);
+
+            //fivecell2 = fivecell2.rotate_zw_theta(std::f128::consts::PI / -90.);
+            //fivecell2 = fivecell2.rotate_xy_theta(std::f128::consts::PI / -90.);
+
+            sleep(Duration::from_millis(50));
+        }
+    }
+
+    pub fn init_render_hypercube(mut self) -> ! {
+        let mut hypercube = Shape4d::hypercube() * 1.5;
+        hypercube.1 = '.';
+        //let mut hypercube2 = Shape4d::hypercube();
+        //hypercube = hypercube.clone().rotate_xy_theta(std::f128::consts::PI / 6.);
+        loop {
+            let cube = hypercube.to_shape_3d();
+            self.render_shape(cube);
+            //let cube2 = hypercube2.to_shape_3d();
+            //self.render_shape(cube2);
+            self.print_screen();
+            self.clear_screen();
+
+            //hypercube = hypercube.rotate_xw_theta(std::f128::consts::PI / 70.);
+            //hypercube = hypercube.rotate_yz_theta(std::f128::consts::PI / 90.);
+
+            //hypercube = hypercube.rotate_yw_theta(std::f128::consts::PI / 70.);
+            //hypercube = hypercube.rotate_xz_theta(std::f128::consts::PI / 90.);
+
+            hypercube = hypercube.rotate_zw_theta(std::f128::consts::PI / 90.);
             //hypercube = hypercube.clone().rotate_xz_theta(std::f128::consts::PI / 90.);
+            hypercube = hypercube.rotate_xy_theta(std::f128::consts::PI / 90.);
 
-            hypercube = hypercube.clone().rotate_zw_theta(std::f128::consts::PI / 90.);
-            hypercube = hypercube.clone().rotate_xy_theta(std::f128::consts::PI / 90.);
-            //hypercube = hypercube.clone().rotate_xy_theta(std::f128::consts::PI / 270.);
+            //hypercube2 = hypercube2.rotate_zw_theta(std::f128::consts::PI / -90.);
+            //hypercube2 = hypercube2.rotate_xy_theta(std::f128::consts::PI / -90.);
 
             sleep(Duration::from_millis(50));
         }
@@ -37,11 +74,11 @@ impl Screen {
 
     pub fn init_render_cube(mut self) -> ! {
         let mut cube = Shape::cube() * 1.1;
-        let mut small_cube = cube.clone() * 0.6;
+        //let mut small_cube = cube.clone() * 0.6;
         cube.1 = '.';
-        small_cube.1 = '*';
+        //small_cube.1 = '*';
         loop {
-            self.render_shape(small_cube.clone());
+            //self.render_shape(small_cube.clone());
             self.render_shape(cube.clone());
             self.print_screen();
             self.clear_screen();
@@ -57,9 +94,9 @@ impl Screen {
             cube = cube.clone().rotate_x_theta(std::f128::consts::PI / 70.);
             cube = cube.clone().rotate_z_theta(std::f128::consts::PI / 180.);
 
-            small_cube = small_cube.clone().rotate_y_theta(std::f128::consts::PI / (2. * -90.));
-            small_cube = small_cube.clone().rotate_x_theta(std::f128::consts::PI / (2. * -70.));
-            small_cube = small_cube.clone().rotate_z_theta(std::f128::consts::PI / (2. * -180.));
+            //small_cube = small_cube.clone().rotate_y_theta(std::f128::consts::PI / (2. * -90.));
+            //small_cube = small_cube.clone().rotate_x_theta(std::f128::consts::PI / (2. * -70.));
+            //small_cube = small_cube.clone().rotate_z_theta(std::f128::consts::PI / (2. * -180.));
             sleep(Duration::from_millis(50));
         }
     }

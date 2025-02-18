@@ -1,5 +1,7 @@
 use std::ops::{Deref, DerefMut, Mul};
 
+use itertools::Itertools;
+
 use super::Shape as Shape3d;
 use crate::{line::fourd::Line, point::fourd::Point};
 
@@ -107,6 +109,19 @@ impl Shape {
                 .collect::<Vec<_>>(),
             self.1,
         )
+    }
+
+    pub fn fivecell() -> Shape {
+        let sqrt_5 = f128::sqrt(5.);
+        let coords = vec![
+            Point([ sqrt_5,  sqrt_5,  sqrt_5, -1.].map(|x| x * 0.25)),
+            Point([ sqrt_5, -sqrt_5, -sqrt_5, -1.].map(|x| x * 0.25)),
+            Point([-sqrt_5,  sqrt_5, -sqrt_5, -1.].map(|x| x * 0.25)),
+            Point([-sqrt_5, -sqrt_5,  sqrt_5, -1.].map(|x| x * 0.25)),
+            Point([0.,0.,0.,1.])
+        ];
+        let lines = coords.iter().combinations(2).map(|x| Line([*x[0], *x[1]]));
+        Shape(lines.collect_vec(), '*')
     }
 
     pub fn hypercube() -> Shape {

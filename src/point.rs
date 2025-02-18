@@ -73,7 +73,8 @@ impl Point {
     }
 
     pub fn to_screen_xy(&self) -> (f128, f128) {
-        (self[0] * 2. / (4. + self[1]), self[2] * 2. / (4. + self[1]))
+        (self[0] * 2. / (4. + self[1]), 
+         self[2] * 2. / (4. + self[1]))
     }
 }
 

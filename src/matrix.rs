@@ -11,7 +11,9 @@ impl Matrix3x3 {
     pub fn rotate_x_theta(theta: f128) -> Matrix3x3 {
         let cos = theta.cos();
         let sin = theta.sin();
-        Matrix3x3([[1., 0., 0.], [0., cos, -sin], [0., sin, cos]])
+        Matrix3x3([[1., 0., 0.], 
+                   [0., cos, -sin], 
+                   [0., sin, cos]])
     }
     
     /// Rotation matrix for rotation across the y axis. Theta is in radians
