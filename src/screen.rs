@@ -1,7 +1,14 @@
+use std::io::{stdin, stdout, Stdout, Write};
+use std::sync::mpsc::TryRecvError;
+use std::thread;
 use std::{char, fmt::Display, thread::sleep, time::Duration};
 
-use crate::{line::Line, point::Point, shape::Shape};
+use termion::event::Key;
+use termion::input::TermRead;
+use termion::raw::IntoRawMode;
+
 use crate::shape::fourd::Shape as Shape4d;
+use crate::{line::Line, point::Point, shape::Shape};
 
 pub type ScreenBuffer = [[char; 78]; 42];
 pub struct MyScreenBuffer(ScreenBuffer);
@@ -40,6 +47,119 @@ impl Screen {
 
             sleep(Duration::from_millis(50));
         }
+    }
+
+    pub fn init_render_hypercube_manual(mut self) {
+        let stdin = stdin();
+        let mut stdout = stdout().into_raw_mode().unwrap();
+        write!(
+            stdout,
+            "{}{}{}",
+            termion::clear::All,
+            termion::cursor::Goto(1, 1),
+            termion::cursor::Hide
+        ).unwrap();
+        stdout.flush().unwrap();
+
+        let mut hypercube = Shape4d::hypercube() * 1.5;
+        hypercube.1 = '.';
+
+        let ref_stdout = &mut stdout;
+
+        let (tx, rx) = std::sync::mpmc::channel::<Option<Key>>();
+
+        thread::scope(|s| {
+            s.spawn(|| {
+                for k in stdin.keys() {
+                    match k.as_ref().unwrap() {
+                        Key::Char('q') | Key::Ctrl('c') => {
+                            tx.send(Some(Key::Char('q'))).unwrap();
+                            break;
+                        }
+                        key @ Key::Char('h' | 'j' | 'k' | 'l' | 'i' | 'n') => {
+                            tx.send(Some(*key)).unwrap()
+                        }
+                        _ => (),
+                    }
+                }
+            });
+            s.spawn(move || {
+                enum Rotate {
+                    ZW,
+                    YW,
+                    YZ,
+                    XW,
+                    XZ,
+                    XY,
+                }
+                let cube = hypercube.to_shape_3d();
+                self.render_shape(cube);
+                self.print_screen_raw(ref_stdout);
+                self.clear_screen();
+
+                loop {
+                    let message = match rx.try_recv() {
+                        Err(TryRecvError::Disconnected) => break,
+                        Ok(Some(Key::Char('q'))) => {
+                            break;
+                        },
+                        Ok(Some(Key::Char(char @ ('h' | 'j' | 'k' | 'l' | 'i' | 'n')))) => {
+                            match char {
+                                'h' => Some(Rotate::XY),
+                                'j' => Some(Rotate::XZ),
+                                'k' => Some(Rotate::YZ),
+                                'l' => Some(Rotate::ZW),
+                                'i' => Some(Rotate::YW),
+                                'n' => Some(Rotate::XW),
+                                _ => todo!(),
+                            }
+                        }
+                        Ok(None) => None,
+                        _ => None,
+                    };
+
+                    if message.is_none() {
+                        continue;
+                    }
+
+                    let cube = hypercube.to_shape_3d();
+                    self.render_shape(cube);
+                    self.print_screen_raw(ref_stdout);
+                    self.clear_screen();
+
+
+                    //hypercube = hypercube.rotate_zw_theta(std::f128::consts::PI / 90.);
+                    //hypercube = hypercube.clone().rotate_xz_theta(std::f128::consts::PI / 90.);
+                    //hypercube = hypercube.rotate_xy_theta(std::f128::consts::PI / 90.);
+
+                    match message.unwrap() {
+                        Rotate::ZW => {
+                            hypercube = hypercube.rotate_zw_theta(std::f128::consts::PI / 12.);
+                        }
+                        Rotate::YW => {
+                            hypercube = hypercube.rotate_yw_theta(std::f128::consts::PI / 12.);
+                        }
+                        Rotate::YZ => {
+                            hypercube = hypercube.rotate_yz_theta(std::f128::consts::PI / 12.);
+                        }
+                        Rotate::XW => {
+                            hypercube = hypercube.rotate_xw_theta(std::f128::consts::PI / 12.);
+                        }
+                        Rotate::XZ => {
+                            hypercube = hypercube.rotate_xz_theta(std::f128::consts::PI / 12.);
+                        }
+                        Rotate::XY => {
+                            hypercube = hypercube.rotate_xy_theta(std::f128::consts::PI / 12.);
+                        }
+                    }
+
+                    sleep(Duration::from_millis(50));
+                }
+            });
+        });
+
+        write!(stdout, "{}", termion::cursor::Show).unwrap();
+        println!("Exit\n");
     }
 
     pub fn init_render_hypercube(mut self) -> ! {
@@ -131,6 +251,12 @@ impl Screen {
 
     fn print_screen(&self) {
         println!("{}", MyScreenBuffer(self.screen));
+    }
+
+    fn print_screen_raw(&self, stdout: &mut Stdout) {
+        for i in self.screen {
+            write!(stdout, "{}\r\n", i.into_iter().collect::<String>()).unwrap();
+        }
     }
 
     fn clear_screen(&mut self) {

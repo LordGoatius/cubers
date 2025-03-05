@@ -1,4 +1,6 @@
-#![feature(f128)]
+#![feature(f128, mpmc_channel)]
+
+use std::process::exit;
 
 use screen::Screen;
 pub mod matrix;
@@ -11,7 +13,9 @@ fn main() -> ! {
     let screen = Screen::default();
     //screen.init_render_cube();
     //screen.init_render_fivecell();
-    screen.init_render_hypercube();
+    //screen.init_render_hypercube();
+    screen.init_render_hypercube_manual();
+    exit(0)
 }
 
 #[cfg(test)]
