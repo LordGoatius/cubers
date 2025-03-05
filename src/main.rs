@@ -10,7 +10,8 @@ pub mod screen;
 pub mod shape;
 
 fn main() -> ! {
-    let screen = Screen::default();
+    //let screen: Screen<78, 42> = Screen::default();
+    let screen: Screen<257, 171> = Screen::default();
     //screen.init_render_cube();
     //screen.init_render_fivecell();
     //screen.init_render_hypercube();
