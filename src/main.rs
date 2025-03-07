@@ -1,6 +1,6 @@
 #![feature(f128, mpmc_channel)]
 
-use std::process::exit;
+use std::{io::{self, Write}, process::exit};
 
 use screen::Screen;
 pub mod matrix;
@@ -10,13 +10,63 @@ pub mod screen;
 pub mod shape;
 
 fn main() -> ! {
-    //let screen: Screen<78, 42> = Screen::default();
-    let screen: Screen<257, 171> = Screen::default();
-    //screen.init_render_cube();
-    //screen.init_render_fivecell();
-    //screen.init_render_hypercube();
-    screen.init_render_hypercube_manual();
-    exit(0)
+    let mut buffer =String::new();
+    let mut choice = 0;
+    loop {
+        print!("Pick 1 for cube, 2 for fivecell, 3 for hypercube, and 4 for controllable hypercube: ");
+        io::stdout().flush().unwrap();
+        io::stdin().read_line(&mut buffer).unwrap();
+        match buffer.trim() {
+            "1" => {
+                choice = 1;
+                break;
+            },
+            "2" => {
+                choice = 2;
+                break;
+            },
+            "3" => {
+                choice = 3;
+                break;
+            },
+            "4" => {
+                choice = 4;
+                break;
+            },
+            _ => continue,
+        };
+    }
+    loop {
+        buffer.clear();
+        print!("1 for large terminal, 2 for small (if the terminal is too small, it may not display the large screen correctly): ");
+        io::stdout().flush().unwrap();
+        io::stdin().read_line(&mut buffer).unwrap();
+        match buffer.trim() {
+            "1" => {
+                let screen: Screen<257, 171> = Screen::default();
+                match choice {
+                    1 => screen.init_render_cube(),
+                    2 => screen.init_render_fivecell(),
+                    3 => screen.init_render_hypercube(),
+                    4 => screen.init_render_hypercube_manual(),
+                    _ => unreachable!()
+                }
+                exit(0);
+            },
+            "2" => {
+                let screen: Screen<78, 42> = Screen::default();
+                match choice {
+                    1 => screen.init_render_cube(),
+                    2 => screen.init_render_fivecell(),
+                    3 => screen.init_render_hypercube(),
+                    4 => screen.init_render_hypercube_manual(),
+                    _ => unreachable!()
+                }
+                exit(0);
+            }
+            _ => continue
+        }
+    }
 }
 
 #[cfg(test)]
